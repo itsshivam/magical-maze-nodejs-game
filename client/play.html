@@ -1,0 +1,230 @@
+<canvas id="ctx" width="750" height="600" style="border : 15px double rgb(255,72,72);"></canvas>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script>
+  var ctx = document.getElementById("ctx").getContext("2d");
+
+
+
+
+
+
+
+
+
+
+
+    var hero = new Image();
+    hero.onload =   function()
+              {
+              ctx.drawImage(hero,-1000,0,150,100);
+            };
+    hero.src = 'client/images/sun1.png';
+
+
+    var bull = new Image();
+    bull.onload =   function()
+              {
+              ctx.drawImage(bull,-1000,0,150,100);
+            };
+    bull.src = 'client/images/bull.png';
+
+
+  
+    var back = new Image();
+    back.onload =   function()
+              {
+              ctx.drawImage(back,0,0,750,600);
+            };
+    back.src = 'client/images/back.png';
+
+    var gameover = new Image();
+    gameover.onload =   function()
+              {
+              ctx.drawImage(gameover,0,0,750,600);
+            };
+    gameover.src = 'client/images/gameover.png';
+
+
+
+
+    var ball = new Image();
+    ball.onload =   function()
+              {
+              ctx.drawImage(ball,173,550,20,20);
+            };
+    ball.src = 'client/images/ball.png';
+
+    var ball2 = new Image();
+    ball2.onload =   function()
+              {
+              ctx.drawImage(ball2,173,550,20,20);
+            };
+    ball2.src = 'client/images/ball2.png';
+
+    var ball3 = new Image();
+    ball3.onload =   function()
+              {
+              ctx.drawImage(ball3,173,550,20,20);
+            };
+    ball3.src = 'client/images/ball3.png';
+
+
+    var monster = new Image();
+    monster.onload =   function()
+              {
+              ctx.drawImage(monster,174,517,50,50);
+            };
+    monster.src = 'client/images/monster.png';
+
+    var trap1_1 = new Image();
+    trap1_1.onload = function(){
+      ctx.drawImage(trap1_1,-1000,-1000,50,50);
+    };
+    trap1_1.src = 'client/images/water.png';
+
+    var trap2_2 = new Image();
+    trap2_2.onload = function(){
+      ctx.drawImage(trap2_2,-1000,-1000,50,50);
+    };
+    trap2_2.src = 'client/images/mud.png';
+
+
+
+
+    
+
+    var k = [1,1,1,1,1,1,1,1]
+
+
+
+
+
+
+  
+  var socket = io();
+    
+  socket.on('newPositions',function(data){
+    ctx.drawImage(back,0,0,750,600);
+    for(var i = 0 ; i < data.length; i++)
+    {
+      ctx.drawImage(trap1_1,data[i].t1_x,data[i].t1_y,25,25);
+      ctx.drawImage(trap2_2,data[i].t2_x,data[i].t2_y,25,25);
+      if(k[i]===1)
+      {
+      if(data[i].k === 1)
+      {
+        ctx.drawImage(bull,data[i].a,data[i].b,10,10);
+        ctx.drawImage(hero,data[i].x,data[i].y,10,10);
+      }
+
+      if(data[i].k === 2)
+      {
+        ctx.drawImage(bull,data[i].a,data[i].b,10,10);
+        ctx.drawImage(hero,data[i].x,data[i].y,10,10);
+      }
+
+      if(data[i].k === 3)
+      {
+        ctx.drawImage(bull,data[i].a,data[i].b,10,10);
+        ctx.drawImage(hero,data[i].x,data[i].y,10,10);
+      }
+
+      if(data[i].k === 4)
+      {
+        ctx.drawImage(bull,data[i].a,data[i].b,10,10);
+        ctx.drawImage(hero,data[i].x,data[i].y,10,10);
+      }
+
+      if((data[i].present === 0) && ((data[i].x>58 && data[i].x<253 && data[i].y>423)&&(data[i].y>423 && data[i].y<585 && data[i].x<252)))
+      {
+          ctx.drawImage(ball,190,data[i].y1,20,20);
+          ctx.drawImage(ball2,data[i].x1,545,20,20);
+          ctx.drawImage(monster,174,517,50,50);
+
+
+
+          if((data[i].x <205) && (data[i].x >175) && (data[i].y > data[i].y1-15) && (data[i].y < data[i].y1 + 15))
+          {
+            k[i]=0;
+          }
+
+          if((data[i].y <560) && (data[i].y >530) && (data[i].x > data[i].x1-15) && (data[i].x < data[i].x1+15))
+          {
+            k[i]=0;
+          }
+
+
+          if((data[i].a>158) && (data[i].a<215) && (data[i].b>500) && (data[i].b<560))
+          {
+            k[i]=0;
+          }
+
+      }
+
+
+      if((data[i].present === 1) && ((data[i].x>59 && data[i].x<258 && data[i].y<424) && (data[i].y>336 && data[i].y<424 && data[i].x<258)))
+      {
+          ctx.drawImage(ball3,data[i].x2,400,20,20);
+          ctx.drawImage(monster,90,380,50,50);
+
+          if((data[i].y <425) && (data[i].y >395) && (data[i].x < data[i].x2+15) && (data[i].x > data[i].x2-15))
+          {
+            k[i]=0;
+          }
+
+          if((data[i].a>65) && (data[i].a<120) && (data[i].b>365) && (data[i].b<420))
+          {
+            k[i]=0;
+          }
+      }
+
+      if((data[i].present === 2) && ((data[i].x>486 && data[i].x<737 && data[i].y<529)&&(data[i].y>368 && data[i].y<529 && data[i].x>486)))
+      {
+          ctx.drawImage(ball2,data[i].x3,470,20,20);
+          ctx.drawImage(monster,630,460,50,50);
+
+          if((data[i].y <485) && (data[i].y >455) && (data[i].x > data[i].x3-15) && (data[i].x < data[i].x3+15))
+          {
+            k[i]=0;
+          }
+
+          if((data[i].a>615) && (data[i].a<680) && (data[i].b>445) && (data[i].b<510))
+          {
+            k[i]=0;
+          }
+      }
+
+
+
+
+    }
+    }
+  });
+
+  document.onkeydown = function(event){
+    if(event.keyCode === 39)  //d
+      socket.emit('keyPress',{inputId:'right',state:true});
+    else if(event.keyCode === 40) //s
+      socket.emit('keyPress',{inputId:'down',state:true});
+    else if(event.keyCode === 37) //a
+      socket.emit('keyPress',{inputId:'left',state:true});
+    else if(event.keyCode === 38) // w
+      socket.emit('keyPress',{inputId:'up',state:true});
+    else if(event.keyCode === 32)   // space bar
+      socket.emit('keyPress',{inputId:'space',state:true});
+      
+  }
+  document.onkeyup = function(event){
+    if(event.keyCode === 39)  //d
+      socket.emit('keyPress',{inputId:'right',state:false});
+    else if(event.keyCode === 40) //s
+      socket.emit('keyPress',{inputId:'down',state:false});
+    else if(event.keyCode === 37) //a
+      socket.emit('keyPress',{inputId:'left',state:false});
+    else if(event.keyCode === 38) // w
+      socket.emit('keyPress',{inputId:'up',state:false});
+    else if(event.keyCode === 32)   // space bar
+      socket.emit('keyPress',{inputId:'space',state:false});
+  }
+  
+</script>
